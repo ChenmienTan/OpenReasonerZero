@@ -1,0 +1,27 @@
+python -m verl.trainer.main_ppo \
+    trainer.nnodes=1 \
+    trainer.n_gpus_per_node=8 \
+    algorithm.adv_estimator=gae \
+    custom_reward_function.path=verl/utils/reward_score/orz.py \
+    actor_rollout_ref.rollout.tensor_model_parallel_size=1 \
+    actor_rollout_ref.model.path=Qwen/Qwen2.5-7B \
+    critic.model.path=Qwen/Qwen2.5-7B \
+    data.train_files=data/orz.parquet \
+    data.val_files=data/olympiadbench.parquet \
+    data.max_prompt_length=2048 \
+    data.max_response_length=6144 \
+    actor_rollout_ref.model.use_remove_padding=True \
+    critic.model.use_remove_padding=True \
+    trainer.total_epochs=1 \
+    data.train_batch_size=128 \
+    actor_rollout_ref.rollout.n=64 \
+    actor_rollout_ref.actor.ppo_mini_batch_size=128 \
+    actor_rollout_ref.actor.use_dynamic_bsz=True \
+    actor_rollout_ref.actor.ppo_max_token_len_per_gpu=8192 \
+    actor_rollout_ref.actor.optim.lr=1e-6 \
+    critic.ppo_mini_batch_size=16 \
+    critic.ppo_max_token_len_per_gpu=8192 \
+    critic.optim.lr=5e-6 \
+    trainer.project_name=OpenReasonerZero \
+    trainer.experiment_name=qwen_7b_ppo \
+    trainer.test_freq=8
